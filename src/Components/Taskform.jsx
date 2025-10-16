@@ -1,0 +1,46 @@
+import React from 'react'   
+
+export function Taskform({addTask}) {
+
+    const [task, setTask] = React.useState("");
+    const [priority, setPriority] = React.useState("medium");
+    const [category, setCategory] = React.useState("general");
+
+    const handlesubmit = (e) => {
+        e.preventDefault();
+        addTask({text: task, priority,  category, completed : false});
+
+        setTask("");
+        setPriority("medium");
+        setCategory("general");
+    }
+  return (
+    <>
+    <form onSubmit={handlesubmit}>
+        <div>
+            <input type="text" placeholder="Enter your task" value={task} onChange={(e) => setTask(e.target.value)} />
+        <button type="submit">Add Task</button>
+        <h1>{task} {priority} {category} </h1>
+        </div>
+
+        <div> 
+            <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </div>
+
+        <div> 
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="general">General</option>
+                <option value="work">Work</option>
+                <option value="personel">Personel</option>
+            </select>
+        </div>
+        
+    </form>
+
+    </>
+  )
+}
