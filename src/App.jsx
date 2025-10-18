@@ -1,29 +1,50 @@
-import { TaskList } from "./Components/TaskList";
-import { Taskform } from "./Components/Taskform";
-import { ProgressTracker } from "./Components/ProgressTracker";
-import React, { useEffect } from 'react'        
+import TaskList from './Components/TaskList';
+import TaskForm from './Components/Taskform';
+import Progresstracker from './components/Progresstracker';
+import './Style.css'
+import { useEffect, useState } from 'react';
 
 
-function App() {  
+export default function App() {
+  const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    localStorage.setItem("tasks",JSON.stringify(tasks));
-   });
+  useEffect(()=>{
+    localStorage.setItem("tasks",JSON.stringify(tasks))
+  });
 
-  const [tasks, setTasks] = React.useState([]);
-
-  const addTask = (task) => {
-    setTasks([...tasks,task]);
+  const addTask = (task)=>{
+    setTasks([...tasks, task])
   }
+
+  const updateTask = (updatedTask, index)=>{
+    const newtask = [...tasks];
+    newtask[index] = updatedTask;
+    setTasks(newtask);
+  }
+
+  const deleteTask = (index)=>{
+    setTasks(tasks.filter((_, i) => i !=index))
+   }
+
+   const clearTasks = () => {
+      setTasks([]);
+   }
+   
   return (
-    <>
-    <h1>Daily Tasks Manager</h1>
-    <p>Hello, from your friendly tasks manager buddy!</p>
-    <Taskform addTask ={addTask} />
-    <TaskList />
-    <ProgressTracker />
-    <button>Clear All Tasks</button>
-    </>
+    <div className='App'>
+      <header>
+        <h1 className='title'>Daily Task Manager</h1>
+        <p className='tagline'>Welcome to your friendly Task Manager</p>
+      </header>
+      <TaskForm addTask = {addTask}/>
+      <TaskList tasks = {tasks}
+      updateTask = {updateTask}
+      deleteTask = {deleteTask} />
+      <Progresstracker tasks = {tasks}/>
+
+      {tasks.length>0 && (<button onClick={clearTasks} className='clear-btn'>Clear all Task</button>)}
+    
+    </div>
+
   )
 }
-export default App;
